@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinaria Patitas Felices - Citas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #74e8fc; /* Un gris suave */
+            transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out; /* Transición suave para el fondo */
+            overflow-x: hidden; /* Evita scroll horizontal en responsive */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #34495e; /* Azul oscuro para títulos */
+        }
+
+        /* Contenedores de Autenticación */
+        .auth-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Gradiente suave */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+            animation: fadeIn 1s ease-out; /* Animación de entrada */
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 120px;
+            border-radius: 50%; /* Logo redondo */
+            border: 4px solid #8e44ad; /* Borde morado */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05); /* Efecto hover */
+        }
+        .logo h2 {
+            font-family: 'Pacifico', cursive; /* Fuente más divertida para el título */
+            color: #2c3e50;
+            margin-top: 15px;
+            font-size: 2.2rem;
+        }
+
+        /* Campos de formulario */
+        .form-control:focus {
+            border-color: #8e44ad;
+            box-shadow: 0 0 0 0.25rem rgba(142, 68, 173, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #8e44ad; /* Botón principal morado */
+            border-color: #8e44ad;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #9b59b6; /* Morado más claro al hover */
+            border-color: #9b59b6;
+            transform: translateY(-2px); /* Efecto de "levantar" */
+        }
+
+        /* Alternar contraseña */
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8e44ad;
+        }
+
+        /* Requisitos de contraseña */
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 10px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .requirement {
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        .requirement i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+        .valid {
+            color: #28a745; /* Verde para válido */
+        }
+        .invalid {
+            color: #dc3545; /* Rojo para inválido */
+        }
+
+        /* Social Login */
+        .social-login {
+            margin: 30px 0;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .social-btn {
+            display: block; /* Hacemos los botones de bloque para mejor responsive */
+            width: 100%;
+            margin-bottom: 10px; /* Espacio entre botones */
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .social-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: white; /* Asegurar que el color del texto no cambie */
+        }
+        .google-btn {
+            background-color: #DB4437;
+        }
+        .facebook-btn {
+            background-color: #1877F2; /* Color oficial de Facebook */
+        }
+
+        /* Dashboard y Sidebar */
+        .nav-sidebar {
+            min-height: 100vh;
+            background-color: #2c3e50; /* Azul oscuro profundo */
+            color: white;
+            padding-top: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-sidebar .logo img {
+            width: 80px; /* Más pequeño en sidebar */
+        }
+        .nav-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            padding: 12px 20px;
+            border-radius: 0 25px 25px 0; /* Bordes redondeados a la derecha */
+            transition: all 0.3s ease;
+        }
+        .nav-sidebar .nav-link i {
+            font-size: 1.1rem;
+            margin-right: 10px;
+        }
+        .nav-sidebar .nav-link:hover {
+            color: white;
+            background-color: #34495e; /* Un tono más claro de azul */
+            transform: translateX(5px); /* Pequeño desplazamiento */
+        }
+        .nav-sidebar .nav-link.active {
+            color: white;
+            background-color: #8e44ad; /* Morado para el activo */
+            box-shadow: 3px 0 10px rgba(142, 68, 173, 0.4);
+            font-weight: 600;
+        }
+        .main-content {
+            padding: 30px;
+            background-color: #fdfdfd;
+            min-height: 100vh;
+        }
+
+        /* Tarjetas de citas */
+        .appointment-card {
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: none;
+            overflow: hidden; /* Para el fondo dinámico */
+        }
+
+        /* Fondos dinámicos (se aplicarán al <body>) */
+        body.perro-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/paw-print.png'); /* Patrón de huellas */
+            background-color: #e6f7ff; /* Azul cielo suave */
+        }
+        body.gato-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/kitten-paw-print.png'); /* Patrón de huellas de gato */
+            background-color: #fff0f5; /* Rosa pálido */
+        }
+        body.ave-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/lined-paper.png'); /* Patrón de líneas suaves (simulando plumas/jaulas) */
+            background-color: #eafaea; /* Verde menta suave */
+        }
+        body.otro-bg {
+            background-color: #f0f2f5; /* Fondo genérico base */
+            background-image: none;
+        }
+
+        /* Contador Regresivo */
+        #countdown-container {
+            background-color: #8e44ad;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.5s infinite alternate; /* Animación de pulsación */
+        }
+        #countdown-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.02); }
+        }
+
+        /* Media Queries para Responsiveness */
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 20px;
+                padding: 20px;
+            }
+            .social-btn {
+                margin-bottom: 15px;
+            }
+            .nav-sidebar {
+                min-height: auto;
+                padding-bottom: 20px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+            .nav-sidebar .nav-link {
+                border-radius: 8px; /* Bordes redondeados completos en móvil */
+                text-align: center;
+            }
+            .nav-sidebar .nav-link i {
+                margin-right: 0;
+                display: block; /* Icono encima del texto */
+                margin-bottom: 5px;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .col-md-2 {
+                display: none; /* Oculta el sidebar por defecto en pantallas pequeñas */
+            }
+            .col-md-10 {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="register-page" class="auth-container">
+        <div class="logo">
+            <img src="https://via.placeholder.com/120/8e44ad/ffffff?text=PF" alt="Logo Patitas Felices" class="img-fluid">
+            <h2>Patitas Felices</h2>
+            <h3>Crear Cuenta</h3>
+        </div>
+
+        <form id="register-form">
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="position-relative">
+                    <input type="password" class="form-control" id="password" required>
+                    <i class="fas fa-eye password-toggle" id="toggle-password"></i>
+                </div>
+                <div class="password-requirements mt-2">
+                    <div class="requirement" id="length-req"><i class="fas fa-times-circle invalid"></i> Exactamente 8 caracteres</div>
+                    <div class="requirement" id="uppercase-req"><i class="fas fa-times-circle invalid"></i> Al menos 1 mayúscula</div>
+                    <div class="requirement" id="number-req"><i class="fas fa-times-circle invalid"></i> Al menos 1 número</div>
+                    <div class="requirement" id="special-req"><i class="fas fa-times-circle invalid"></i> Al menos 1 símbolo especial</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">Registrarse</button>
+
+            <div class="social-login text-center">
+                <p class="my-3 text-muted">O regístrate con:</p>
+                <a href="#" class="social-btn google-btn"><i class="fab fa-google"></i> Google</a>
+                <a href="#" class="social-btn facebook-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
+            </div>
+
+            <div class="text-center mt-3">
+                <p class="text-muted">¿Ya tienes una cuenta? <a href="#" id="login-link">Inicia Sesión</a></p>
+            </div>
+        </form>
+    </div>
+
+    <div id="login-page" class="auth-container" style="display: none;">
+        <div class="logo">
+            <img src="img/imagen.img" alt="Logo Patitas Felices" class="img-fluid">
+            <h2>Patitas Felices</h2>
+            <h3>Iniciar Sesión</h3>
+        </div>
+
+        <form id="login-form">
+            <div class="mb-3">
+                <label for="login-email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="login-email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="login-password" class="form-label">Contraseña</label>
+                <div class="position-relative">
+                    <input type="password" class="form-control" id="login-password" required>
+                    <i class="fas fa-eye password-toggle" id="toggle-login-password"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">Entrar</button>
+
+            <div class="text-center mt-3">
+                <a href="#" id="forgot-password" class="text-muted text-decoration-none">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div class="social-login text-center">
+                <p class="my-3 text-muted">O inicia sesión con:</p>
+                <a href="#" class="social-btn google-btn"><i class="fab fa-google"></i> Google</a>
+                <a href="#" class="social-btn facebook-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
+            </div>
+
+            <div class="text-center mt-3">
+                <p class="text-muted">¿No tienes cuenta? <a href="#" id="register-link">Regístrate</a></p>
+            </div>
+        </form>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <div class="container-fluid">
+            <div class="row flex-nowrap"> <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-dark nav-sidebar d-none d-md-block">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <div class="logo text-center py-4">
+                            <img src="https://via.placeholder.com/80/8e44ad/ffffff?text=PF" alt="Logo Veterinaria" class="img-fluid rounded-circle">
+                            <h5 class="mt-2">Patitas Felices</h5>
+                        </div>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" id="nav-appointment">
+                                    <i class="fas fa-calendar-alt me-2"></i> Cita médica
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="#" id="nav-reports">
+                                    <i class="fas fa-chart-bar me-2"></i> Reportes
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="#" id="nav-profile">
+                                    <i class="fas fa-user me-2"></i> Mis datos
+                                </a>
+                            </li>
+                            <li class="nav-item mt-auto pt-4"> <a class="nav-link text-danger" href="#" id="logout-btn">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col py-3 main-content">
+                    <div id="appointment-section">
+                        <h2 class="mb-4 display-5"><i class="fas fa-calendar-alt me-3 text-primary"></i>Agendar Cita Médica</h2>
+
+                        <div class="card appointment-card">
+                            <div class="card-body">
+                                <form id="appointment-form">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="owner-name" class="form-label">Nombre del Dueño</label>
+                                            <input type="text" class="form-control" id="owner-name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="pet-name" class="form-label">Nombre de la Mascota</label>
+                                            <input type="text" class="form-control" id="pet-name" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="pet-type" class="form-label">Tipo de Mascota</label>
+                                        <select class="form-select" id="pet-type" required>
+                                            <option value="">Seleccione tipo de mascota</option>
+                                            <option value="perro">🐶 Perro</option>
+                                            <option value="gato">🐱 Gato</option>
+                                            <option value="ave">🐦 Ave</option>
+                                            <option value="otro">🐾 Otro</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="appointment-date" class="form-label">Fecha</label>
+                                            <input type="date" class="form-control" id="appointment-date" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="appointment-time" class="form-label">Hora</label>
+                                            <input type="time" class="form-control" id="appointment-time" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="veterinarian" class="form-label">Veterinario Asignado</label>
+                                        <select class="form-select" id="veterinarian" required>
+                                            <option value="">Seleccione un veterinario</option>
+                                            </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="symptoms" class="form-label">Síntomas Observados</label>
+                                        <textarea class="form-control" id="symptoms" rows="3" required></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Agendar Cita</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card appointment-card text-center" id="confirmation-card" style="display: none;">
+                            <div class="card-body">
+                                <h3 class="card-title text-success mb-4 animate__animated animate__bounceIn"><i class="fas fa-check-circle me-2"></i>¡Cita Confirmada!</h3>
+                                <div id="appointment-details" class="mb-4"></div>
+                                <div class="alert alert-success mt-3 animate__animated animate__fadeInUp">
+                                    <i class="fas fa-envelope me-2"></i>**¡Ficha enviada!** Recibirás un correo de confirmación con los detalles de tu cita.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="countdown-container" class="mt-5 mb-5" style="display: none;">
+                            <h3 class="text-white">Próxima Cita en:</h3>
+                            <p id="countdown-display" class="animate__animated animate__pulse"></p>
+                        </div>
+
+                    </div>
+
+                    <div id="reports-section" style="display: none;">
+                        <h2 class="mb-4 display-5"><i class="fas fa-chart-bar me-3 text-info"></i>Reportes de Atenciones</h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="text-muted">Aquí se mostrarían los reportes y estadísticas de las mascotas atendidas y el historial de citas. Esta sección puede ser para el personal de la clínica.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="profile-section" style="display: none;">
+                        <h2 class="mb-4 display-5"><i class="fas fa-user me-3 text-warning"></i>Mi Perfil</h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="text-muted">Aquí podrías ver y editar tus datos personales, así como añadir y gestionar tus mascotas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Ingresa tu correo electrónico asociado a tu cuenta para recibir instrucciones de recuperación:</p>
+                    <input type="email" class="form-control" id="recovery-email" placeholder="tu@email.com">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="send-recovery">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variables globales
+        let currentUser = null; // Simula el usuario logueado
+        let nextAppointment = null; // Almacena la próxima cita para el contador
+        let countdownInterval = null; // Para controlar el intervalo del contador
+
+        // Datos de veterinarios (simulados, en un entorno real vendrían de un backend)
+        const veterinarians = [
+            { id: 'vet1', name: 'Dra. Sofía López' },
+            { id: 'vet2', name: 'Dr. Ricardo Ramírez' },
+            { id: 'vet3', name: 'Dra. Andrea Ortega' },
+            { id: 'vet4', name: 'Dr. Javier Vargas' }
+        ];
+
+        // --- Funciones Auxiliares ---
+        function toggleRequirement(elementId, isValid) {
+            const element = document.getElementById(elementId);
+            const validIcon = element.querySelector('.valid');
+            const invalidIcon = element.querySelector('.invalid');
+
+            if (isValid) {
+                if (invalidIcon) invalidIcon.classList.add('d-none');
+                if (validIcon) validIcon.classList.remove('d-none');
+                element.classList.remove('invalid');
+                element.classList.add('valid');
+            } else {
+                if (validIcon) validIcon.classList.add('d-none');
+                if (invalidIcon) invalidIcon.classList.remove('d-none');
+                element.classList.remove('valid');
+                element.classList.add('invalid');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('register-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            showSection('appointment-section'); // Muestra la sección de agendar cita por defecto
+            setActiveNav('nav-appointment');
+            // Cargar veterinarios al entrar al dashboard
+            populateVeterinarians();
+            // Intentar cargar la próxima cita si existe (simulado)
+            loadNextAppointment();
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.main-content > div').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function setActiveNav(navId) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(navId).classList.add('active');
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        }
+
+        function formatTime(timeString) {
+            // Convierte "HH:MM" a "HH:MM AM/PM" si es necesario o ajusta formato
+            const [hours, minutes] = timeString.split(':');
+            const date = new Date();
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function populateVeterinarians() {
+            const vetSelect = document.getElementById('veterinarian');
+            vetSelect.innerHTML = '<option value="">Seleccione un veterinario</option>'; // Limpiar antes de poblar
+            veterinarians.forEach(vet => {
+                const option = document.createElement('option');
+                option.value = vet.id;
+                option.textContent = vet.name;
+                vetSelect.appendChild(option);
+            });
+        }
+
+        function setDynamicBackground(petType) {
+            document.body.classList.remove('perro-bg', 'gato-bg', 'ave-bg', 'otro-bg');
+            if (petType) {
+                document.body.classList.add(`${petType}-bg`);
+            } else {
+                document.body.classList.add('otro-bg'); // Default si no hay tipo específico
+            }
+        }
+
+        function updateCountdown() {
+            if (!nextAppointment || !nextAppointment.date || !nextAppointment.time) {
+                document.getElementById('countdown-container').style.display = 'none';
+                return;
+            }
+
+            const appointmentDateTime = new Date(`${nextAppointment.date}T${nextAppointment.time}`);
+            const now = new Date();
+            const diff = appointmentDateTime.getTime() - now.getTime(); // Diferencia en milisegundos
+
+            const countdownDisplay = document.getElementById('countdown-display');
+            const countdownContainer = document.getElementById('countdown-container');
+
+            if (diff <= 0) {
+                countdownDisplay.textContent = '¡Es hora de tu cita!';
+                clearInterval(countdownInterval); // Detener el contador
+                countdownContainer.classList.add('animate__animated', 'animate__headShake'); // Efecto al finalizar
+                setTimeout(() => countdownContainer.style.display = 'none', 5000); // Ocultar después de 5 segundos
+                return;
+            }
+
+            // Calcular días, horas, minutos, segundos
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdownDisplay.innerHTML = `
+                ${days > 0 ? `<span class="badge bg-light text-primary">${days}D</span>` : ''}
+                <span class="badge bg-light text-primary">${String(hours).padStart(2, '0')}H</span>
+                <span class="badge bg-light text-primary">${String(minutes).padStart(2, '0')}M</span>
+                <span class="badge bg-light text-primary">${String(seconds).padStart(2, '0')}S</span>
+            `;
+            countdownContainer.style.display = 'block';
+        }
+
+        function startCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval); // Limpiar cualquier intervalo anterior
+            }
+            countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Llamar inmediatamente para evitar retraso de 1 segundo
+        }
+
+        function loadNextAppointment() {
+            // En una aplicación real, aquí harías una llamada al backend
+            // para obtener la cita más próxima del currentUser desde la base de datos.
+            // Para la simulación, usaremos localStorage.
+            const storedAppointment = localStorage.getItem('nextAppointment');
+            if (storedAppointment) {
+                nextAppointment = JSON.parse(storedAppointment);
+                startCountdown();
+                setDynamicBackground(nextAppointment.petType); // Establecer el fondo de la cita cargada
+            } else {
+                document.getElementById('countdown-container').style.display = 'none';
+                setDynamicBackground('otro'); // Fondo genérico si no hay citas
+            }
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle entre login y registro
+            document.getElementById('login-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('register-page').style.display = 'none';
+                document.getElementById('login-page').style.display = 'block';
+            });
+
+            document.getElementById('register-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('register-page').style.display = 'block';
+            });
+
+            // Mostrar/ocultar contraseña (Registro)
+            document.getElementById('toggle-password').addEventListener('click', function() {
+                const passwordField = document.getElementById('password');
+                const icon = this;
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+            // Mostrar/ocultar contraseña (Login)
+            document.getElementById('toggle-login-password').addEventListener('click', function() {
+                const passwordField = document.getElementById('login-password');
+                const icon = this;
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+            // Validación de contraseña en tiempo real
+            document.getElementById('password').addEventListener('input', function() {
+                const password = this.value;
+
+                // Validar longitud
+                const lengthValid = password.length === 8;
+                toggleRequirement('length-req', lengthValid);
+
+                // Validar mayúscula
+                const uppercaseValid = /[A-Z]/.test(password);
+                toggleRequirement('uppercase-req', uppercaseValid);
+
+                // Validar número
+                const numberValid = /[0-9]/.test(password);
+                toggleRequirement('number-req', numberValid);
+
+                // Validar símbolo especial
+                const specialValid = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+                toggleRequirement('special-req', specialValid);
+            });
+
+            // Formulario de registro
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                // Validar contraseña (doble chequeo en submit)
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8}$/;
+                if (!passwordRegex.test(password)) {
+                    alert('La contraseña no cumple con todos los requisitos. Por favor, verifica las indicaciones.');
+                    return;
+                }
+
+                // Simular registro exitoso
+                currentUser = {
+                    username: username,
+                    email: email,
+                    password: password // En un entorno real, esto sería un hash
+                };
+                alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+                document.getElementById('register-page').style.display = 'none';
+                document.getElementById('login-page').style.display = 'block';
+                document.getElementById('login-email').value = email; // Pre-rellena el email para login
+            });
+
+            // Formulario de login
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                // Simular credenciales válidas
+                // En una app real, esto sería una verificación asíncrona con el backend y Bcrypt
+                if ((email === 'admin@example.com' && password === 'P@ssw0rd') ||
+                    (currentUser && currentUser.email === email && currentUser.password === password)) {
+                    showDashboard();
+                } else {
+                    alert('Credenciales incorrectas. Por favor, verifica tu correo y contraseña.');
+                }
+            });
+
+            // Recuperación de contraseña (modal)
+            document.getElementById('forgot-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                const forgotPasswordModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+                forgotPasswordModal.show();
+            });
+
+            document.getElementById('send-recovery').addEventListener('click', function() {
+                const email = document.getElementById('recovery-email').value;
+                if (email && email.includes('@')) {
+                    alert(`Se ha enviado un enlace de recuperación a ${email}. Revisa tu bandeja de entrada.`);
+                    const forgotPasswordModal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+                    forgotPasswordModal.hide();
+                } else {
+                    alert('Por favor ingresa un correo electrónico válido.');
+                }
+            });
+
+            // Navegación del dashboard
+            document.getElementById('nav-appointment').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('appointment-section');
+                setActiveNav('nav-appointment');
+            });
+
+            document.getElementById('nav-reports').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('reports-section');
+                setActiveNav('nav-reports');
+            });
+
+            document.getElementById('nav-profile').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('profile-section');
+                setActiveNav('nav-profile');
+            });
+
+            // Cerrar sesión
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                currentUser = null;
+                nextAppointment = null;
+                localStorage.removeItem('nextAppointment'); // Limpiar la cita guardada
+                if (countdownInterval) clearInterval(countdownInterval); // Detener el contador
+                setDynamicBackground('otro'); // Regresar a fondo genérico
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('login-page').style.display = 'block';
+                document.getElementById('login-email').value = '';
+                document.getElementById('login-password').value = '';
+                document.getElementById('confirmation-card').style.display = 'none'; // Ocultar confirmación
+                document.getElementById('appointment-form').style.display = 'block'; // Mostrar formulario
+            });
+
+            // Formulario de cita médica
+            document.getElementById('appointment-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const ownerName = document.getElementById('owner-name').value;
+                const petName = document.getElementById('pet-name').value;
+                const petType = document.getElementById('pet-type').value;
+                const date = document.getElementById('appointment-date').value;
+                const time = document.getElementById('appointment-time').value;
+                const veterinarianId = document.getElementById('veterinarian').value;
+                const symptoms = document.getElementById('symptoms').value;
+
+                const selectedVet = veterinarians.find(vet => vet.id === veterinarianId);
+                const veterinarianName = selectedVet ? selectedVet.name : 'No asignado';
+
+                // Generar número de ficha aleatorio
+                const ticketNumber = 'FICHA-' + Math.floor(10000 + Math.random() * 90000); // 5 dígitos
+
+                // Almacenar la próxima cita (simulado)
+                nextAppointment = {
+                    ownerName, petName, petType, date, time, veterinarianName, symptoms, ticketNumber
+                };
+                localStorage.setItem('nextAppointment', JSON.stringify(nextAppointment));
+
+                // Mostrar confirmación
+                document.getElementById('appointment-details').innerHTML = `
+                    <p class="mb-1"><i class="fas fa-ticket-alt me-2 text-info"></i><strong>Número de Ficha:</strong> <span class="text-primary">${ticketNumber}</span></p>
+                    <p class="mb-1"><i class="fas fa-user-alt me-2 text-muted"></i><strong>Dueño:</strong> ${ownerName}</p>
+                    <p class="mb-1"><i class="fas fa-paw me-2 text-muted"></i><strong>Mascota:</strong> ${petName} (<span class="text-capitalize">${petType}</span>)</p>
+                    <p class="mb-1"><i class="fas fa-calendar-day me-2 text-muted"></i><strong>Fecha:</strong> ${formatDate(date)}</p>
+                    <p class="mb-1"><i class="fas fa-clock me-2 text-muted"></i><strong>Hora:</strong> ${formatTime(time)}</p>
+                    <p class="mb-1"><i class="fas fa-user-md me-2 text-muted"></i><strong>Veterinario:</strong> ${veterinarianName}</p>
+                    <p class="mb-1"><i class="fas fa-notes-medical me-2 text-muted"></i><strong>Síntomas:</strong> ${symptoms}</p>
+                `;
+
+                document.getElementById('appointment-form').style.display = 'none';
+                document.getElementById('confirmation-card').style.display = 'block';
+
+                // Simular envío de correo
+                console.log(`📩 Ficha enviada al correo del cliente (${currentUser ? currentUser.email : 'admin@example.com'})`);
+
+                // Iniciar el contador regresivo
+                startCountdown();
+                // Actualizar el fondo dinámico
+                setDynamicBackground(petType);
+
+                 // Restablecer el formulario después de un breve delay para permitir ver la confirmación
+                 setTimeout(() => {
+                    document.getElementById('appointment-form').reset();
+                    document.getElementById('appointment-form').style.display = 'block'; // Mostrar de nuevo el formulario para nueva cita
+                    document.getElementById('confirmation-card').style.display = 'none'; // Ocultar tarjeta de confirmación
+                }, 10000); // Se muestra la confirmación por 10 segundos
+            });
+        });
+    </script>
+</body>
+</html>
